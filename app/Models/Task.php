@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Task extends Model
 {
@@ -18,6 +19,8 @@ class Task extends Model
         'title',
         'description',
         'status',
+        'section',
+        'goal_id',
         'due_date',
     ];
 
@@ -31,6 +34,14 @@ class Task extends Model
         return [
             'due_date' => 'date',
         ];
+    }
+
+    /**
+     * Get the goal that owns the task.
+     */
+    public function goal(): BelongsTo
+    {
+        return $this->belongsTo(Goal::class);
     }
 
     /**
@@ -51,7 +62,31 @@ class Task extends Model
     public function isOverdue(): bool
     {
         return $this->due_date &&
-            $this->due_date->isPast() &&
+            now()->gt($this->due_date) &&
             $this->status === 'pending';
+    }
+
+    /**
+     * Scope a query to only include tasks of a given section.
+     */
+    public function scopeSection($query, string $section)
+    {
+        return $query->where('section', $section);
+    }
+
+    /**
+     * Scope a query to only include pending tasks.
+     */
+    public function scopePending($query)
+    {
+        return $query->where('status', 'pending');
+    }
+
+    /**
+     * Scope a query to only include completed tasks.
+     */
+    public function scopeCompleted($query)
+    {
+        return $query->where('status', 'completed');
     }
 }
