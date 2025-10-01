@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\TestMotivationalEmail;
 
 class TestEmail extends Command
 {
@@ -19,7 +20,7 @@ class TestEmail extends Command
      *
      * @var string
      */
-    protected $description = 'Send a test email to verify mail configuration';
+    protected $description = 'Send a test email with full HTML template to verify mail configuration';
 
     /**
      * Execute the console command.
@@ -38,19 +39,16 @@ class TestEmail extends Command
             return self::FAILURE;
         }
 
-        $this->info('Sending test email...');
+        $this->info('Sending test email with full template...');
         $this->line("Mailer: " . config('mail.default'));
         $this->line("To: {$email}");
         $this->line("From: " . config('mail.from.address'));
 
         try {
-            Mail::raw('This is a test email from DailyDrive. If you received this, your mail configuration is working correctly!', function ($message) use ($email) {
-                $message->to($email)
-                    ->subject('DailyDrive - Test Email');
-            });
+            Mail::to($email)->send(new TestMotivationalEmail());
 
             $this->newLine();
-            $this->info('✓ Test email sent successfully!');
+            $this->info('✓ Test email with full template sent successfully!');
 
             if (config('mail.default') === 'log') {
                 $this->line('Mail driver is set to "log". Check storage/logs/laravel.log for the email content.');
@@ -66,8 +64,7 @@ class TestEmail extends Command
             $this->line('1. Check your .env file for correct MAIL_* settings');
             $this->line('2. Verify MAIL_MAILER is set (smtp, log, etc.)');
             $this->line('3. For Gmail, use an App Password, not your regular password');
-            $this->line('4. Check storage/logs/laravel.log for detailed error messages');
-
+            $this->line('4. Make sure you have some quotes in your database');
             return self::FAILURE;
         }
     }

@@ -18,10 +18,11 @@ class TaskController extends Controller
     public function dashboard(QuotePicker $quotePicker): View
     {
         $quote = $quotePicker->getDailyQuote();
+        $currentTime = now();
 
+        // Get daily tasks ordered by time
         $dailyTasks = Task::section('daily')
-            ->orderBy('status', 'asc')
-            ->orderBy('created_at', 'desc')
+            ->orderByTime()
             ->get();
 
         $weeklyTasks = Task::section('weekly')
@@ -40,6 +41,7 @@ class TaskController extends Controller
 
         return view('dashboard', compact(
             'quote',
+            'currentTime',
             'dailyTasks',
             'weeklyTasks',
             'monthlyTasks',
@@ -57,10 +59,19 @@ class TaskController extends Controller
         $section = $request->get('section');
         $goalId = $request->get('goal_id');
 
-        $query = Task::with('goal')->orderBy('created_at', 'desc');
+        $query = Task::with('goal');
 
         if ($section) {
             $query->section($section);
+
+            // Order daily tasks by time
+            if ($section === 'daily') {
+                $query->orderByTime();
+            } else {
+                $query->orderBy('created_at', 'desc');
+            }
+        } else {
+            $query->orderBy('created_at', 'desc');
         }
 
         if ($goalId) {

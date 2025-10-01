@@ -27,7 +27,7 @@
             <h1 class="display-5">
                 <i class="bi bi-speedometer2 text-primary"></i> Dashboard
             </h1>
-            <p class="text-muted">{{ now()->format('l, F j, Y') }}</p>
+            <p class="text-muted">{{ now()->format('l, F j, Y') }} <span id="current-time">{{ now()->format('h:i A') }}</span></p>
         </div>
     </div>
 
@@ -84,14 +84,11 @@
                     ])
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 @endsection
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+    // Task toggle functionality
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const checkboxes = document.querySelectorAll('.task-checkbox');
     
@@ -120,6 +117,24 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
-});
+
+    // Update time every minute
+    function updateCurrentTime() {
+        const now = new Date();
+        let hours = now.getHours();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        
+        const timeElement = document.getElementById('current-time');
+        if (timeElement) {
+            timeElement.textContent = `${hours}:${minutes} ${ampm}`;
+        }
+    }
+    
+    // Update time immediately and then every minute
+    updateCurrentTime();
+    setInterval(updateCurrentTime, 60000);
 </script>
 @endpush

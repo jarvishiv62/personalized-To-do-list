@@ -72,6 +72,62 @@
                                 @enderror
                             </div>
 
+                            <!-- Time Schedule Fields (for Daily tasks) -->
+                            <div class="card border-info mb-3" id="timeScheduleCard"
+                                style="display: {{ old('section', $task->section) === 'daily' ? 'block' : 'none' }};">
+                                <div class="card-header bg-info text-white">
+                                    <h6 class="mb-0">
+                                        <i class="bi bi-clock"></i> Time Schedule (Optional for Daily Tasks)
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <!-- Start Time -->
+                                        <div class="col-md-6 mb-3 mb-md-0">
+                                            <label for="start_time" class="form-label fw-bold">
+                                                Start Time
+                                            </label>
+                                            <input type="time"
+                                                class="form-control @error('start_time') is-invalid @enderror"
+                                                id="start_time" name="start_time"
+                                                value="{{ old('start_time', $task->start_time ? \Carbon\Carbon::parse($task->start_time)->format('H:i') : '') }}">
+                                            @error('start_time')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                            <div class="form-text">
+                                                <i class="bi bi-info-circle"></i> When does this task start?
+                                            </div>
+                                        </div>
+
+                                        <!-- End Time -->
+                                        <div class="col-md-6">
+                                            <label for="end_time" class="form-label fw-bold">
+                                                End Time
+                                            </label>
+                                            <input type="time" class="form-control @error('end_time') is-invalid @enderror"
+                                                id="end_time" name="end_time"
+                                                value="{{ old('end_time', $task->end_time ? \Carbon\Carbon::parse($task->end_time)->format('H:i') : '') }}">
+                                            @error('end_time')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                            <div class="form-text">
+                                                <i class="bi bi-info-circle"></i> When does this task end?
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @if($task->duration)
+                                        <div class="alert alert-success mt-3 mb-0">
+                                            <i class="bi bi-clock-history"></i> <strong>Duration:</strong> {{ $task->duration }}
+                                            minutes
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+
                             <!-- Goal Field -->
                             <div class="mb-3">
                                 <label for="goal_id" class="form-label fw-bold">
@@ -141,6 +197,11 @@
                         <h6 class="card-title">
                             <i class="bi bi-clock-history text-info"></i> Task Information
                         </h6>
+                        @if($task->time_range)
+                            <p class="small text-muted mb-1">
+                                <strong>Time Range:</strong> {{ $task->time_range }}
+                            </p>
+                        @endif
                         <p class="small text-muted mb-1">
                             <strong>Created:</strong> {{ $task->created_at->format('F j, Y \a\t g:i A') }}
                         </p>
@@ -153,3 +214,24 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sectionSelect = document.getElementById('section');
+            const timeScheduleCard = document.getElementById('timeScheduleCard');
+
+            // Show/hide time schedule card based on section
+            sectionSelect.addEventListener('change', function () {
+                if (this.value === 'daily') {
+                    timeScheduleCard.style.display = 'block';
+                } else {
+                    timeScheduleCard.style.display = 'none';
+                    // Clear time fields when not daily
+                    document.getElementById('start_time').value = '';
+                    document.getElementById('end_time').value = '';
+                }
+            });
+        });
+    </script>
+@endpush

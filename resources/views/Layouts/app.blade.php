@@ -34,6 +34,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('pomodoro.index') }}">
+                            <i class="bi bi-alarm"></i> Pomodoro Timer
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('goals.*') ? 'active' : '' }}" 
                            href="{{ route('goals.index') }}">
                             <i class="bi bi-bullseye"></i> Goals

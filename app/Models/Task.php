@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,6 +23,8 @@ class Task extends Model
         'section',
         'goal_id',
         'due_date',
+        'start_time',
+        'end_time',
     ];
 
     /**
@@ -32,7 +35,9 @@ class Task extends Model
     protected function casts(): array
     {
         return [
-            'due_date' => 'date',
+            'due_date' => 'datetime',
+            'start_time' => 'datetime:H:i',
+            'end_time' => 'datetime:H:i',
         ];
     }
 
@@ -62,8 +67,100 @@ class Task extends Model
     public function isOverdue(): bool
     {
         return $this->due_date &&
-            now()->gt($this->due_date) &&
+            $this->due_date->isPast() &&
             $this->status === 'pending';
+    }
+
+    /**
+     * Check if task is currently ongoing based on time.
+     *
+     * @return bool
+     */
+    public function isOngoing(): bool
+    {
+        if (!$this->start_time || !$this->end_time || $this->status === 'completed') {
+            return false;
+        }
+
+        $now = now()->format('H:i:s');
+        $startTime = Carbon::parse($this->start_time)->format('H:i:s');
+        $endTime = Carbon::parse($this->end_time)->format('H:i:s');
+
+        return $now >= $startTime && $now <= $endTime;
+    }
+
+    /**
+     * Check if task is upcoming (starts in the future today).
+     *
+     * @return bool
+     */
+    public function isUpcoming(): bool
+    {
+        if (!$this->start_time || $this->status === 'completed') {
+            return false;
+        }
+
+        $now = now()->format('H:i:s');
+        $startTime = Carbon::parse($this->start_time)->format('H:i:s');
+
+        return $now < $startTime;
+    }
+
+    /**
+     * Check if task time has passed.
+     *
+     * @return bool
+     */
+    public function isPastTime(): bool
+    {
+        if (!$this->end_time) {
+            return false;
+        }
+
+        $now = now()->format('H:i:s');
+        $endTime = Carbon::parse($this->end_time)->format('H:i:s');
+
+        return $now > $endTime && $this->status === 'pending';
+    }
+
+    /**
+     * Get formatted time range string.
+     *
+     * @return string|null
+     */
+    public function getTimeRangeAttribute(): ?string
+    {
+        if (!$this->start_time && !$this->end_time) {
+            return null;
+        }
+
+        if ($this->start_time && $this->end_time) {
+            return Carbon::parse($this->start_time)->format('g:i A') . ' - ' .
+                Carbon::parse($this->end_time)->format('g:i A');
+        }
+
+        if ($this->start_time) {
+            return 'From ' . Carbon::parse($this->start_time)->format('g:i A');
+        }
+
+        return 'Until ' . Carbon::parse($this->end_time)->format('g:i A');
+    }
+
+    /**
+     * Get the duration in minutes.
+     *
+     * @return int|null
+     */
+    public function getDurationAttribute(): ?int
+    {
+        if (!$this->start_time || !$this->end_time) {
+            return null;
+        }
+
+        $start = Carbon::parse($this->start_time);
+        $end = Carbon::parse($this->end_time);
+
+        return $start->diffInMinutes($end);
     }
 
     /**
@@ -88,5 +185,15 @@ class Task extends Model
     public function scopeCompleted($query)
     {
         return $query->where('status', 'completed');
+    }
+
+    /**
+     * Scope a query to order tasks by time.
+     */
+    public function scopeOrderByTime($query)
+    {
+        return $query->orderByRaw('start_time IS NULL')
+            ->orderBy('start_time', 'asc')
+            ->orderBy('created_at', 'desc');
     }
 }
