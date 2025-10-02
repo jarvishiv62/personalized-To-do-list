@@ -5,6 +5,7 @@ use App\Http\Controllers\GoalController;
 use App\Http\Controllers\PomodoroController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\DiaryController;
+use App\Http\Controllers\ProgressController;
 use Illuminate\Support\Facades\Route;
 
 // Redirect root to dashboard
@@ -36,3 +37,7 @@ Route::resource('diary', DiaryController::class);
 // Calendar Routes (NEW - Stage 6)
 Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
 Route::get('/calendar/events', [CalendarController::class, 'events'])->name('calendar.events');
+
+// Progress Routes (NEW - Stage 7)
+Route::get('/progress', [ProgressController::class, 'index'])->name('progress.index');
+Route::get('/progress/data', [ProgressController::class, 'getData'])->name('progress.data');

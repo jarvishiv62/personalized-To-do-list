@@ -196,4 +196,31 @@ class Task extends Model
             ->orderBy('start_time', 'asc')
             ->orderBy('created_at', 'desc');
     }
+
+    /**
+     * Handle task completion gamification.
+     * Call this method after marking a task as completed.
+     */
+    public function handleCompletion(): void
+    {
+        if ($this->status !== 'completed') {
+            return;
+        }
+        
+        $stats = \App\Models\UserStats::getOrCreate();
+        
+        // Award points (10 points per task)
+        $stats->awardPoints(10);
+        
+        // Update streak
+        $stats->updateStreak();
+        
+        // Record daily completion
+        $today = now()->toDateString();
+        $todayCount = self::where('status', 'completed')
+            ->whereDate('updated_at', today())
+            ->count();
+        
+        $stats->recordDailyCompletion($today, $todayCount);
+    }
 }

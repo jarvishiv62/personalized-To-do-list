@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             QuoteSeeder::class,
             GoalSeeder::class,
             DiarySeeder::class,
+            UserStatsSeeder::class,
         ]);
     }
 }

@@ -164,14 +164,19 @@ class TaskController extends Controller
         $task->update([
             'status' => $task->status === 'pending' ? 'completed' : 'pending'
         ]);
-
+        
         // Update goal progress when task status changes
         if ($task->goal_id) {
             $task->goal->calculateProgress();
         }
+        
+        // Handle gamification
+        if ($task->status === 'completed') {
+            $task->handleCompletion();
+        }
 
-        $message = $task->status === 'completed'
-            ? 'Task marked as completed!'
+        $message = $task->status === 'completed' 
+            ? 'Task marked as completed! +10 points earned! 🎉' 
             : 'Task marked as pending!';
 
         if (request()->wantsJson()) {

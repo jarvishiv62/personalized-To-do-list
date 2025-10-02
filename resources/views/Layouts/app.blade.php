@@ -65,6 +65,11 @@
                             <i class="bi bi-alarm"></i> Pomodoro Timer
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('progress.*') ? 'active' : '' }}" href="{{ route('progress.index') }}">
+                            <i class="bi bi-graph-up"></i> Progress
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
