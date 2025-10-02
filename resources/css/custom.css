@@ -541,3 +541,341 @@ html {
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+
+/* ---------------------------------
+Stage 6 - Diary & Calendar Styles 
+-----------------------------------*/
+
+/* Diary Card Styling */
+.diary-card {
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.diary-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    border-left-color: #0d6efd;
+}
+
+.diary-card .card-title a {
+    transition: color 0.2s ease;
+}
+
+.diary-card .card-title a:hover {
+    color: #0d6efd !important;
+}
+
+/* Diary Content Display */
+.diary-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #333;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: Georgia, 'Times New Roman', serif;
+}
+
+/* Calendar Styling */
+.fc {
+    /* FullCalendar custom styling */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.fc-event {
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 2px 4px;
+    transition: opacity 0.2s ease;
+}
+
+.fc-event:hover {
+    opacity: 0.85;
+}
+
+.fc-daygrid-event {
+    white-space: normal;
+}
+
+.fc-toolbar-title {
+    font-size: 1.5rem !important;
+    font-weight: 600;
+}
+
+/* Event Modal Styling */
+#eventModal .modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+#eventModal .modal-header .btn-close {
+    filter: invert(1);
+}
+
+/* Diary Entry Badge */
+.badge.bg-info.text-dark {
+    background-color: #0dcaf0 !important;
+}
+
+/* Calendar Legend */
+.gap-3 {
+    gap: 1rem !important;
+}
+
+/* Diary Search Card */
+.diary-card .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+/* Calendar Event Colors */
+.fc-event.fc-event-task-daily {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.fc-event.fc-event-task-weekly {
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+
+.fc-event.fc-event-task-monthly {
+    background-color: #6f42c1;
+    border-color: #6f42c1;
+}
+
+.fc-event.fc-event-diary {
+    background-color: #198754;
+    border-color: #198754;
+}
+
+.fc-event.fc-event-overdue {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+/* Diary Entry Date Badge */
+.diary-card .text-muted {
+    font-size: 0.9rem;
+}
+
+/* Empty State Styling */
+.diary-card .bi-journal-plus {
+    font-size: 5rem;
+}
+
+/* Textarea for Diary Content */
+textarea#content {
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.6;
+    resize: vertical;
+}
+
+/* Diary Word Count Badge */
+.badge.bg-info {
+    background-color: #0dcaf0 !important;
+}
+
+/* Calendar View Button Group */
+.btn-group .btn-primary,
+.btn-group .btn-success {
+    border-radius: 6px;
+}
+
+.btn-group .btn-primary:not(:last-child),
+.btn-group .btn-success:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.btn-group .btn-primary:not(:first-child),
+.btn-group .btn-success:not(:first-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* Responsive Calendar */
+@media (max-width: 768px) {
+    .fc-toolbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .fc-toolbar-chunk {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .fc-toolbar-title {
+        font-size: 1.2rem !important;
+    }
+    
+    .diary-content {
+        font-size: 1rem;
+    }
+}
+
+/* Print Styles for Diary */
+@media print {
+    .navbar,
+    .btn-group,
+    footer,
+    .alert {
+        display: none !important;
+    }
+    
+    .diary-content {
+        font-size: 12pt;
+        line-height: 1.5;
+    }
+    
+    .card {
+        border: 1px solid #ddd;
+        box-shadow: none;
+    }
+}
+
+/* Smooth Scrolling for Diary Content */
+.diary-content {
+    scroll-behavior: smooth;
+}
+
+/* Diary Title Hover Effect */
+.diary-card .card-title {
+    transition: all 0.2s ease;
+}
+
+.diary-card:hover .card-title {
+    color: #0d6efd;
+}
+
+/* Calendar Loading State */
+.fc .fc-loading {
+    opacity: 0.6;
+}
+
+/* Event Detail Modal Animation */
+#eventModal.fade .modal-dialog {
+    transition: transform 0.3s ease-out;
+}
+
+#eventModal.show .modal-dialog {
+    transform: none;
+}
+
+/* Diary Pagination */
+.pagination {
+    margin-top: 2rem;
+}
+
+.pagination .page-link {
+    border-radius: 6px;
+    margin: 0 2px;
+    border: 1px solid #dee2e6;
+    color: #0d6efd;
+}
+
+.pagination .page-link:hover {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    color: white;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+/* Diary Entry Metadata */
+.diary-card small {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+/* Calendar Today Highlight */
+.fc .fc-day-today {
+    background-color: rgba(13, 110, 253, 0.1) !important;
+}
+
+/* Diary Content Styling in Modal */
+#eventModalBody h4 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+#eventModalBody .badge {
+    font-size: 0.85rem;
+    padding: 0.4em 0.7em;
+}
+
+/* Calendar Event Time Display */
+.fc-event-time {
+    font-weight: 600;
+    margin-right: 4px;
+}
+
+/* Diary Search Form */
+.diary-card .form-control {
+    border-radius: 6px;
+}
+
+/* Calendar Navigation Buttons */
+.fc-button {
+    border-radius: 6px !important;
+    text-transform: capitalize !important;
+}
+
+.fc-button-primary {
+    background-color: #0d6efd !important;
+    border-color: #0d6efd !important;
+}
+
+.fc-button-primary:hover {
+    background-color: #0b5ed7 !important;
+    border-color: #0a58ca !important;
+}
+
+.fc-button-primary:disabled {
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+}
+
+/* Diary Entry Animation */
+@keyframes diaryCardAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.diary-card {
+    animation: diaryCardAppear 0.5s ease-out;
+}
+
+/* Calendar Event Tooltip Enhancement */
+.fc-event-title {
+    font-weight: 500;
+}
+
+/* Mobile Responsive Adjustments for Diary */
+@media (max-width: 576px) {
+    .diary-card .btn-group {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .diary-card .btn-group .btn {
+        width: 100%;
+        margin: 2px 0;
+    }
+    
+    .display-5 {
+        font-size: 2rem;
+    }
+}

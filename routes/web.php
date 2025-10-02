@@ -3,6 +3,8 @@
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\GoalController;
 use App\Http\Controllers\PomodoroController;
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\DiaryController;
 use Illuminate\Support\Facades\Route;
 
 // Redirect root to dashboard
@@ -27,3 +29,10 @@ Route::post('/pomodoro/pause', [PomodoroController::class, 'pauseTimer'])->name(
 Route::post('/pomodoro/reset', [PomodoroController::class, 'resetTimer'])->name('pomodoro.reset');
 Route::get('/pomodoro/status', [PomodoroController::class, 'getStatus'])->name('pomodoro.status');
 Route::post('/pomodoro/update-time', [PomodoroController::class, 'updateRemainingTime'])->name('pomodoro.update-time');
+
+// Diary Routes (NEW - Stage 6)
+Route::resource('diary', DiaryController::class);
+
+// Calendar Routes (NEW - Stage 6)
+Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+Route::get('/calendar/events', [CalendarController::class, 'events'])->name('calendar.events');

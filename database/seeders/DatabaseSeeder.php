@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             TaskSeeder::class,
             QuoteSeeder::class,
             GoalSeeder::class,
+            DiarySeeder::class,
         ]);
     }
 }

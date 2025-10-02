@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'DailyDrive - Your Goals & Tasks Dashboard')</title>
-    
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    
+
     <!-- Custom CSS -->
     @vite(['resources/css/custom.css', 'resources/js/app.js'])
+    @stack('styles')
 </head>
+
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -28,32 +31,38 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('dashboard') || request()->routeIs('home') ? 'active' : '' }}" 
-                           href="{{ route('dashboard') }}">
+                        <a class="nav-link {{ request()->routeIs('dashboard') || request()->routeIs('home') ? 'active' : '' }}"
+                            href="{{ route('dashboard') }}">
                             <i class="bi bi-speedometer2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('goals.*') ? 'active' : '' }}"
+                            href="{{ route('goals.index') }}">
+                            <i class="bi bi-bullseye"></i> Goals
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('tasks.index') ? 'active' : '' }}"
+                            href="{{ route('tasks.index') }}">
+                            <i class="bi bi-list-task"></i> All Tasks
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('diary.*') ? 'active' : '' }}"
+                            href="{{ route('diary.index') }}">
+                            <i class="bi bi-journal-text"></i> Diary
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('calendar.*') ? 'active' : '' }}"
+                            href="{{ route('calendar.index') }}">
+                            <i class="bi bi-calendar3"></i> Calendar
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('pomodoro.index') }}">
                             <i class="bi bi-alarm"></i> Pomodoro Timer
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('goals.*') ? 'active' : '' }}" 
-                           href="{{ route('goals.index') }}">
-                            <i class="bi bi-bullseye"></i> Goals
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('tasks.index') ? 'active' : '' }}" 
-                           href="{{ route('tasks.index') }}">
-                            <i class="bi bi-list-task"></i> All Tasks
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('tasks.create') ? 'active' : '' }}" 
-                           href="{{ route('tasks.create') }}">
-                            <i class="bi bi-plus-circle"></i> New Task
                         </a>
                     </li>
                 </ul>
@@ -94,8 +103,9 @@
 
     <!-- Bootstrap 5 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <!-- Custom Scripts -->
     @stack('scripts')
 </body>
+
 </html>
