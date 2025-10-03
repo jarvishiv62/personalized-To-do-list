@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Third Party Services
@@ -35,4 +34,17 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Google Gemini AI Configuration (Stage 8)
+    |--------------------------------------------------------------------------
+    */
+    'gemini' => [
+        'api_key' => env('GEMINI_API_KEY'),
+        'enabled' => env('AI_MODE', false),
+        'model' => env('AI_MODEL', 'gemini-2.5-flash'),
+        'base_url' => 'https://generativelanguage.googleapis.com/v1beta',
+        'max_tokens' => env('AI_MAX_TOKENS', 500),
+        'temperature' => env('AI_TEMPERATURE', 0.7),
+    ],
 ];

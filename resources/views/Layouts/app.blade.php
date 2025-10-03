@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 
     <!-- Custom CSS -->
-    @vite(['resources/css/custom.css', 'resources/js/app.js'])
+    @vite(['resources/css/custom.css', 'resources/css/Gemini.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
 
@@ -99,6 +99,9 @@
         @yield('content')
     </main>
 
+    <!-- Floating Chatbot Widget (Stage 8 - Gemini AI) -->
+    @include('partials.chat-widget')
+    
     <!-- Footer -->
     <footer class="bg-light text-center py-3 mt-5">
         <div class="container">
@@ -111,6 +114,8 @@
 
     <!-- Custom Scripts -->
     @stack('scripts')
+
+
 </body>
 
 </html>

@@ -33,7 +33,7 @@ class UserStats extends Model
     protected function casts(): array
     {
         return [
-            'last_activity_date' => 'date',
+            'last_activity_date' => 'datetime:Y-m-d',
             'badges' => 'array',
             'daily_completion' => 'array',
         ];
@@ -79,7 +79,7 @@ class UserStats extends Model
     public function updateStreak(): void
     {
         $today = now()->toDateString();
-        $lastActivity = $this->last_activity_date?->toDateString();
+        $lastActivity = $this->last_activity_date ? $this->last_activity_date->toDateString() : null;
 
         if ($lastActivity === $today) {
             // Already counted today

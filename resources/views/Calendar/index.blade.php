@@ -97,7 +97,7 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                 },
-                events: '{{ route('calendar.events') }}',
+                events: "{{ route('calendar.events') }}",
                 eventClick: function (info) {
                     info.jsEvent.preventDefault();
 

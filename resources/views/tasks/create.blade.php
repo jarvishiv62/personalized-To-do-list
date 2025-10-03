@@ -73,7 +73,7 @@
 
                             <!-- Time Schedule Fields (for Daily tasks) -->
                             <div class="card border-info mb-3" id="timeScheduleCard"
-                                style="display: {{ old('section', request('section')) === 'daily' ? 'block' : 'none' }};">
+                                style="display: {{ old('section', request('section')) === 'daily' ? 'block' : 'none' }}">
                                 <div class="card-header bg-info text-white">
                                     <h6 class="mb-0">
                                         <i class="bi bi-clock"></i> Time Schedule (Optional for Daily Tasks)

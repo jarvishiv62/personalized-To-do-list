@@ -5,6 +5,7 @@ use App\Http\Controllers\GoalController;
 use App\Http\Controllers\PomodoroController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\DiaryController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ProgressController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,7 +24,7 @@ Route::patch('tasks/{task}/toggle', [TaskController::class, 'toggle'])->name('ta
 // Goal resource routes
 Route::resource('goals', GoalController::class);
 
-// Pomodoro Timer Routes
+// Pomodoro Timer Routes (NEW - Stage 5)
 Route::get('/pomodoro', [PomodoroController::class, 'index'])->name('pomodoro.index');
 Route::post('/pomodoro/start', [PomodoroController::class, 'startTimer'])->name('pomodoro.start');
 Route::post('/pomodoro/pause', [PomodoroController::class, 'pauseTimer'])->name('pomodoro.pause');
@@ -41,3 +42,9 @@ Route::get('/calendar/events', [CalendarController::class, 'events'])->name('cal
 // Progress Routes (NEW - Stage 7)
 Route::get('/progress', [ProgressController::class, 'index'])->name('progress.index');
 Route::get('/progress/data', [ProgressController::class, 'getData'])->name('progress.data');
+
+// Chat Routes (Stage 8)
+Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+Route::post('/chat/message', [ChatController::class, 'message'])->name('chat.message');
+Route::post('/chat/clear', [ChatController::class, 'clear'])->name('chat.clear');
+Route::get('/chat/history', [ChatController::class, 'history'])->name('chat.history');

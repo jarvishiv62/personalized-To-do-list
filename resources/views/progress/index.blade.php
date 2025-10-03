@@ -373,7 +373,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Fetch progress data
-            fetch('{{ route('progress.data') }}')
+            fetch("{{ route('progress.data') }}")
                 .then(response => response.json())
                 .then(data => {
                     console.log('Progress Data:', data);
@@ -583,7 +583,7 @@
             return 0;
         }
     </script>
- @endpush
+@endpush
 <!-- <i class="bi bi-bar-chart"></i> Weekly Activity
 </h5>
 </div>
@@ -610,8 +610,8 @@
 
 <!-- Section Breakdown & Completion Trend -->
 <!-- <div class="row mb-4"> -->
-     <!-- Section Breakdown Pie Chart  -->
-    <!-- <div class="col-md-6 mb-3">
+<!-- Section Breakdown Pie Chart  -->
+<!-- <div class="col-md-6 mb-3">
         <div class="card shadow-sm">
             <div class="card-header bg-white">
-                <h5 class="mb-0">  --> 
+                <h5 class="mb-0">  -->
