@@ -29,7 +29,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('dashboard') || request()->routeIs('home') ? 'active' : '' }}"
                             href="{{ route('dashboard') }}">
@@ -48,6 +48,46 @@
                             <i class="bi bi-list-task"></i> All Tasks
                         </a>
                     </li>
+                    
+                    @auth
+                        <!-- User Dropdown Menu -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle me-1"></i>
+                                {{ Auth::user()->name }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="bi bi-person me-2"></i> Profile
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item">
+                                            <i class="bi bi-box-arrow-right me-2"></i> Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    @else
+                        <!-- Login/Register Buttons -->
+                        <li class="nav-item">
+                            <a class="btn btn-outline-light me-2" href="{{ route('login') }}">
+                                <i class="bi bi-box-arrow-in-right"></i> Login
+                            </a>
+                        </li>
+                        @if (Route::has('register'))
+                            <li class="nav-item">
+                                <a class="btn btn-light" href="{{ route('register') }}">
+                                    <i class="bi bi-person-plus"></i> Register
+                                </a>
+                            </li>
+                        @endif
+                    @endauth
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('diary.*') ? 'active' : '' }}"
                             href="{{ route('diary.index') }}">

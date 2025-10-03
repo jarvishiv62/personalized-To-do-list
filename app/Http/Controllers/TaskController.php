@@ -9,9 +9,17 @@ use App\Services\QuotePicker;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Auth;
 
-class TaskController extends Controller
+class TaskController extends \App\Http\Controllers\Controller
 {
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display the dashboard with tasks organized by section.
      */
@@ -20,24 +28,38 @@ class TaskController extends Controller
         $quote = $quotePicker->getDailyQuote();
         $currentTime = now();
 
-        // Get daily tasks ordered by time
-        $dailyTasks = Task::section('daily')
+        $user = Auth::user();
+
+        // Get daily tasks ordered by time for the current user
+        $dailyTasks = $user->tasks()
+            ->section('daily')
             ->orderByTime()
             ->get();
 
-        $weeklyTasks = Task::section('weekly')
+        $weeklyTasks = $user->tasks()
+            ->section('weekly')
             ->orderBy('status', 'asc')
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $monthlyTasks = Task::section('monthly')
+        $monthlyTasks = $user->tasks()
+            ->section('monthly')
             ->orderBy('status', 'asc')
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $dailyGoals = Goal::section('daily')->with('tasks')->get();
-        $weeklyGoals = Goal::section('weekly')->with('tasks')->get();
-        $monthlyGoals = Goal::section('monthly')->with('tasks')->get();
+        // Get goals with their associated tasks for the current user
+        $dailyGoals = $user->goals()->section('daily')->with(['tasks' => function($query) use ($user) {
+            $query->where('user_id', $user->id);
+        }])->get();
+
+        $weeklyGoals = $user->goals()->section('weekly')->with(['tasks' => function($query) use ($user) {
+            $query->where('user_id', $user->id);
+        }])->get();
+
+        $monthlyGoals = $user->goals()->section('monthly')->with(['tasks' => function($query) use ($user) {
+            $query->where('user_id', $user->id);
+        }])->get();
 
         return view('dashboard', compact(
             'quote',
@@ -59,7 +81,8 @@ class TaskController extends Controller
         $section = $request->get('section');
         $goalId = $request->get('goal_id');
 
-        $query = Task::with('goal');
+        $user = Auth::user();
+        $query = $user->tasks()->with('goal');
 
         if ($section) {
             $query->section($section);
@@ -79,7 +102,7 @@ class TaskController extends Controller
         }
 
         $tasks = $query->get();
-        $goals = Goal::all();
+        $goals = Auth::user()->goals;
 
         return view('tasks.index', compact('tasks', 'goals', 'section', 'goalId'));
     }
@@ -89,7 +112,7 @@ class TaskController extends Controller
      */
     public function create(): View
     {
-        $goals = Goal::all();
+        $goals = Auth::user()->goals;
         return view('tasks.create', compact('goals'));
     }
 
@@ -98,7 +121,7 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request): RedirectResponse
     {
-        $task = Task::create($request->validated());
+        $task = Auth::user()->tasks()->create($request->validated());
 
         // Update goal progress if task is associated with a goal
         if ($task->goal_id) {
@@ -114,7 +137,7 @@ class TaskController extends Controller
      */
     public function edit(Task $task): View
     {
-        $goals = Goal::all();
+        $goals = Auth::user()->goals;
         return view('tasks.edit', compact('task', 'goals'));
     }
 
@@ -123,6 +146,7 @@ class TaskController extends Controller
      */
     public function update(StoreTaskRequest $request, Task $task): RedirectResponse
     {
+        $this->authorize('update', $task);
         $oldGoalId = $task->goal_id;
         $task->update($request->validated());
 
@@ -144,6 +168,7 @@ class TaskController extends Controller
      */
     public function destroy(Task $task): RedirectResponse
     {
+        $this->authorize('delete', $task);
         $goalId = $task->goal_id;
         $task->delete();
 
@@ -161,6 +186,7 @@ class TaskController extends Controller
      */
     public function toggle(Task $task)
     {
+        $this->authorize('update', $task);
         $task->update([
             'status' => $task->status === 'pending' ? 'completed' : 'pending'
         ]);

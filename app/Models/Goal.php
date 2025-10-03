@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Goal extends Model
@@ -20,6 +21,7 @@ class Goal extends Model
         'description',
         'section',
         'progress',
+        'user_id',
     ];
 
     /**
@@ -32,6 +34,14 @@ class Goal extends Model
         return [
             'progress' => 'float',
         ];
+    }
+
+    /**
+     * Get the user that owns the goal.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     /**

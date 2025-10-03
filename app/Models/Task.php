@@ -21,6 +21,7 @@ class Task extends Model
         'description',
         'status',
         'section',
+        'user_id',
         'goal_id',
         'due_date',
         'start_time',
@@ -39,6 +40,17 @@ class Task extends Model
             'start_time' => 'datetime:H:i',
             'end_time' => 'datetime:H:i',
         ];
+    }
+
+    /**
+     * Get the goal that owns the task.
+     */
+    /**
+     * Get the user that owns the task.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     /**
