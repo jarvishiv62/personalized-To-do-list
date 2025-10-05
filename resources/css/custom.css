@@ -880,3 +880,84 @@ textarea#content {
     }
 }
 
+
+/* Heatmap Styles */
+.heatmap-container {
+    display: grid;
+    grid-template-columns: repeat(18, 12px);
+    grid-auto-rows: 12px;
+    gap: 3px;
+    justify-content: center;
+    padding: 10px 0;
+    margin: 0 auto;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.heatmap-cell {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    background-color: #ebedf0;
+    transition: all 0.2s ease;
+}
+
+.heatmap-legend {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.legend-box {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+}
+
+/* Stat Card Gradients */
+.stat-card.bg-gradient-primary {
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%) !important;
+}
+
+.stat-card.bg-gradient-warning {
+    background: linear-gradient(135deg, #f6c23e 0%, #dda20a 100%) !important;
+}
+
+.stat-card.bg-gradient-danger {
+    background: linear-gradient(135deg, #e74a3b 0%, #be2617 100%) !important;
+}
+
+.stat-card.bg-gradient-success {
+    background: linear-gradient(135deg, #1cc88a 0%, #13855c 100%) !important;
+}
+
+.stat-card .text-white-50 {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.stat-card i {
+    opacity: 0.3;
+    font-size: 2.5rem;
+}
+
+/* Heatmap color levels */
+.level-0 { background-color: #ebedf0; }
+.level-1 { background-color: #9be9a8; }
+.level-2 { background-color: #40c463; }
+.level-3 { background-color: #30a14e; }
+.level-4 { background-color: #216e39; }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .heatmap-cell {
+        width: 10px;
+        height: 10px;
+    }
+    
+    .legend-box {
+        width: 10px;
+        height: 10px;
+    }
+}
